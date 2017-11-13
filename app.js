@@ -24,21 +24,23 @@ class TicTacToe {
   }
 
   takeTurn() {
-    showBoard();
+    this.showBoard();
+    console.log(`Player ${this.player}'s turn`)
+    var current = this;
     const space = prompt.get(['move'], function(err, result) {
       if (err) {
         console.log('Error making move');
       } else {
         const row = Math.floor((result.move - 1) / 3);
         const column = (result.move - 1) % 3;
-        if (this.board[row][column] === '') {
-          this.board[row][column] = this.player;
-          this.moves++;
-          if (isWinner(row, column)) {
+        if (current.board[row][column] === '') {
+          current.board[row][column] = current.player;
+          current.moves++;
+          if (current.isWinner(row, column)) {
             console.log('Congratulations you have won the game!');
           } else {
-            this.player === 'X' ? 'O' : 'X';
-            takeTurn();
+            current.player === 'X' ? current.player = 'O' : current.player = 'X';
+            current.takeTurn();
           }
         }
       }
@@ -46,19 +48,40 @@ class TicTacToe {
   }
 
   isWinner(row, column) {
-
+    if (this.rowWinner(row) || this.columnWinner(column) || this.diagonalWinner(row, column)) {
+      return true;
+    }
+    return false;
   }
 
   rowWinner(row) {
-
+    if (this.board[row][0] === this.board[row][1] && this.board[row][1] === this.board[row][2]) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  columneWinner(column) {
-
+  columnWinner(column) {
+    if (this.board[0][column] === this.board[1][column] && this.board[1][column] === this.board[2][column]) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  diagonalWinner(start) {
+  diagonalWinner(row, column) {
+    const diagonals = [[0,0], [0, 2], [1, 1], [2, 0], [2, 2]];
+    if (diagonals.includes([row, column])) {
+      if (this.board[0][0] === this.board[1, 1] && this.board[1, 1] === this.board[2, 2]) {
+        return true;
+      }
 
+      if (this.board[0, 2] === this.board[1][1] && this.board[1][1] === this.board[2][0]) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
