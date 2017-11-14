@@ -35,10 +35,14 @@ class TicTacToe {
         const column = (result.move - 1) % 3;
         if (current.board[row][column] === '') {
           current.board[row][column] = current.player;
-          current.moves++;
+          current.numMoves = current.numMoves + 1;
+          console.log(current.numMoves)
           if (current.isWinner(row, column)) {
             console.log('Congratulations you have won the game!');
-          } else {
+          } else if (current.numMoves === 9) {
+            console.log('Game over')
+            current.showBoard();
+          }else {
             current.player === 'X' ? current.player = 'O' : current.player = 'X';
             current.takeTurn();
           }
@@ -72,16 +76,17 @@ class TicTacToe {
 
   diagonalWinner(row, column) {
     const diagonals = [[0,0], [0, 2], [1, 1], [2, 0], [2, 2]];
-    if (diagonals.includes([row, column])) {
-      if (this.board[0][0] === this.board[1, 1] && this.board[1, 1] === this.board[2, 2]) {
-        return true;
-      }
-
-      if (this.board[0, 2] === this.board[1][1] && this.board[1][1] === this.board[2][0]) {
-        return true;
-      }
+  
+    if ((this.board[0][0] === 'X' && this.board[1][1] === 'X' && this.board[2][2] === 'X') || (this.board[0][0] === 'O' && this.board[1][1] === 'O' && this.board[2][2] === 'O') )  {
+      return true;
     }
+
+    if ((this.board[0][2] === 'X' && this.board[1][1] === 'X' && this.board[2][0] === 'X') || (this.board[0][2] === 'O' && this.board[1][1] === 'O' && this.board[2][0] === 'O')) {
+      return true;
+    }
+
     return false;
+    
   }
 }
 
